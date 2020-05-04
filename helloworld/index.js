@@ -1,16 +1,38 @@
-module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
+const fetch = require('node-fetch');
+const puppeteer = require("puppeteer");
+const width = 1200;
+const height = 800;
 
-    if (req.query.name || (req.body && req.body.name)) {
-        context.res = {
-            // status: 200, /* Defaults to 200 */
-            body: "Chad says Hello " + (req.query.name || req.body.name)
-        };
-    }
-    else {
-        context.res = {
-            status: 400,
-            body: "Chad says please pass a name on the query string or in the request body"
-        };
-    }
+module.exports = async function (context, req) {
+  browser = await puppeteer.launch({
+    headless: true,
+    slowMo: 80,
+    args: [`--window-size=${width},${height}`],
+  });
+  page = await browser.newPage();
+  await page.setViewport({ width, height });
+
+  await page.goto("https://covid19.ca.gov/");
+  await page.waitForSelector("h1");
+  const links = await page.$$eval("a", (anchors) => anchors);
+
+  let finalOutput = `number of links on page: ${links.length}`;
+
+  let body = {
+    text: finalOutput
+  };
+
+  fetch(process.env["SLACK_PERF_WEBHOOK"], {
+    method: "post",
+    body: JSON.stringify(body),
+    headers: { "Content-Type": "application/json" }
+  }).then(res => {
+    console.log(res);
+  });
+
+
+  context.res = {
+    status: 200,
+    body: finalOutput
+  };
 };
