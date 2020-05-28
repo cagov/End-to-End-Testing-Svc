@@ -1,27 +1,41 @@
 const fetch = require('node-fetch');
-const puppeteer = require("puppeteer");
+const { webkit } = require('playwright');
 const width = 1200;
 const height = 800;
+let results = {}
 
 module.exports = async function (context, req) {
-  browser = await puppeteer.launch({
-    headless: true,
-    slowMo: 80,
-    args: [`--window-size=${width},${height}`],
-  });
-  page = await browser.newPage();
-  await page.setViewport({ width, height });
+const browser = await webkit.launch({ headless: false, slowMo: 50 });
+    const page = await browser.newPage();
 
-  await page.goto("https://covid19.ca.gov/");
-  await page.waitForSelector("h1");
-  const links = await page.$$eval("a", (anchors) => anchors);
+//HOMEPAGE
+    await page.goto('http://covid19.ca.gov/');
+    
+    const dimensions = await page.evaluate(() => {
+      return document.querySelectorAll('a').length
+    })
+    console.log(dimensions);
+    results.homepage = "number of links: "+dimensions;
 
-  let finalOutput = `number of links on page: ${links.length}`;
+//ROADMAP
 
+    await page.goto('http://covid19.ca.gov/roadmap/');
+    
+    const dimensions2 = await page.evaluate(() => {
+      return document.querySelectorAll('a').length
+    })
+    console.log(dimensions2);
+    results.roadmap = "number of links2: "+dimensions2;
+   
+  /* 
   let body = {
-    text: finalOutput
+    text: "numberoflinks: "+dimensions
   };
 
+
+
+
+  
   fetch(process.env["SLACK_PERF_WEBHOOK"], {
     method: "post",
     body: JSON.stringify(body),
@@ -30,9 +44,10 @@ module.exports = async function (context, req) {
     console.log(res);
   });
 
+*/
 
   context.res = {
     status: 200,
-    body: finalOutput
+    body: results
   };
 };
