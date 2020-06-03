@@ -1,40 +1,44 @@
 const fetch = require('node-fetch');
 const { webkit } = require('playwright');
-const width = 1200;
-const height = 800;
-let results = {}
+
 
 module.exports = async function (context, req) {
-const browser = await webkit.launch({ headless: false, slowMo: 50 });
-    const page = await browser.newPage();
+  const browser = await webkit.launch({ headless: true, slowMo: 50 });
+  const page = await browser.newPage();
+  let results = {}
+  let passingTests = 0;
+  let failedTests = 0;
 
-//HOMEPAGE
-    await page.goto('http://covid19.ca.gov/');
-    
-    const dimensions = await page.evaluate(() => {
-      return document.querySelectorAll('a').length
-    })
-    console.log(dimensions);
-    results.homepage = "number of links: "+dimensions;
+  function linkCountCheck(count) {
+    if(linkCount >= 20) {
+      passingTests++;
+    } else {
+      failedTests++;
+    }  
+  }
 
-//ROADMAP
+  //HOMEPAGE
+  await page.goto('http://covid19.ca.gov/');
+  
+  let linkCount = await page.evaluate(() => {
+    return document.querySelectorAll('a').length
+  })
+  linkCountCheck(linkCount)
+  results.homepage = "homepage number of links: "+linkCount;
 
-    await page.goto('http://covid19.ca.gov/roadmap/');
-    
-    const dimensions2 = await page.evaluate(() => {
-      return document.querySelectorAll('a').length
-    })
-    console.log(dimensions2);
-    results.roadmap = "number of links2: "+dimensions2;
+  //ROADMAP
+  await page.goto('http://covid19.ca.gov/roadmap/');
+  
+  linkCount = await page.evaluate(() => {
+    return document.querySelectorAll('a').length
+  })
+  linkCountCheck(linkCount)
+  results.roadmap = "roadmap number of links: "+linkCount;
    
-  /* 
+  
   let body = {
-    text: "numberoflinks: "+dimensions
+    text: `${passingTests} passing tests, ${failedTests} failed Tests`
   };
-
-
-
-
   
   fetch(process.env["SLACK_PERF_WEBHOOK"], {
     method: "post",
@@ -43,8 +47,6 @@ const browser = await webkit.launch({ headless: false, slowMo: 50 });
   }).then(res => {
     console.log(res);
   });
-
-*/
 
   context.res = {
     status: 200,
