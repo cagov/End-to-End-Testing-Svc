@@ -3,8 +3,6 @@ const playwright = require('playwright');
 
 
 module.exports = async function (context, req) {
-  
-
   const browser = await playwright['chromium'].launch({ headless: true, slowMo: 50 });
   const browserContext = await browser.newContext();
   const page = await browserContext.newPage();
