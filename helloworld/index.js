@@ -3,7 +3,7 @@ const { webkit } = require('playwright');
 
 
 module.exports = async function (context, req) {
-  /*
+  
   const browser = await webkit.launch({ headless: true, slowMo: 50 });
   const page = await browser.newPage();
   let results = {}
@@ -17,7 +17,7 @@ module.exports = async function (context, req) {
       failedTests++;
     }  
   }
-
+  /*
   //HOMEPAGE
   await page.goto('http://covid19.ca.gov/');
   
@@ -50,7 +50,7 @@ module.exports = async function (context, req) {
   });
   */
 
-  let results = {"status":"success"};
+  results = {"status":"success"};
   context.res = {
     status: 200,
     body: results
