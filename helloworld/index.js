@@ -1,10 +1,10 @@
 const fetch = require('node-fetch');
-const { webkit } = require('playwright');
+const { chromium } = require('playwright');
 
 
 module.exports = async function (context, req) {
   
-  const browser = await webkit.launch({ headless: true, slowMo: 50 });
+  const browser = await chromium.launch({ headless: true, slowMo: 50 });
   const page = await browser.newPage();
   let results = {}
   let passingTests = 0;
