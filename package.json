@@ -1,5 +1,5 @@
 {
-  "name": "End-to-End-Testing-Svc",
+  "name": "end-to-end-testing-svc",
   "version": "1.0.0",
   "description": "Deployement target - https://fa-go-alph-e2e-001.azurewebsites.net",
   "main": "index.js",

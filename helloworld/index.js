@@ -8,7 +8,7 @@ const args = {
 }
 
 module.exports = async function(context, req) {
-  const { browser: name } = req.query;
+  const name = req.query.browser || 'chromium';
   const browser = await playwright[name].launch({
     args: args[name]
   });
