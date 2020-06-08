@@ -1,8 +1,9 @@
 const fetch = require('node-fetch');
-const { webkit } = require('playwright');
+// const { webkit } = require('playwright');
 
 
 module.exports = async function (context, req) {
+  /*
   const browser = await webkit.launch({ headless: true, slowMo: 50 });
   const page = await browser.newPage();
   let results = {}
@@ -47,7 +48,9 @@ module.exports = async function (context, req) {
   }).then(res => {
     console.log(res);
   });
+  */
 
+  let results = {"status":"success"};
   context.res = {
     status: 200,
     body: results
