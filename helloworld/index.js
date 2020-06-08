@@ -1,5 +1,5 @@
 const fetch = require('node-fetch');
-// const { webkit } = require('playwright');
+const { webkit } = require('playwright');
 
 
 module.exports = async function (context, req) {
