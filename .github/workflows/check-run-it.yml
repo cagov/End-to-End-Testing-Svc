@@ -1,8 +1,7 @@
 name: Raise curtain
 
 on:
-  schedule:
-    - cron: '*/1 * * * *'
+  repository_dispatch
 
 jobs:
   build:

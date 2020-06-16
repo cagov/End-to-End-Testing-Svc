@@ -8,6 +8,7 @@ module.exports = async function (context, req) {
   let results = {}
   let passingTests = 0;
   let failedTests = 0;  
+  let serverName = 'https://as-cdt-pub-acovid-w-p-001-staging.azurewebsites.net/';
   
   function linkCountCheck(count) {
     if(linkCount >= 20) {
@@ -17,7 +18,7 @@ module.exports = async function (context, req) {
     }  
   }
   //HOMEPAGE
-  await page.goto('https://covid19.ca.gov/');
+  await page.goto(serverName);
   
   let linkCount = await page.evaluate(() => {
     return document.querySelectorAll('a').length
@@ -26,7 +27,7 @@ module.exports = async function (context, req) {
   results.homepage = "homepage number of links: "+linkCount;
 
   //ROADMAP
-  await page.goto('https://covid19.ca.gov/roadmap/');
+  await page.goto(serverName+'roadmap/');
   
   linkCount = await page.evaluate(() => {
     return document.querySelectorAll('a').length
