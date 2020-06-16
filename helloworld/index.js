@@ -1,40 +1,14 @@
 const fetch = require('node-fetch');
-// const playwright = require('playwright');
-const puppeteer = require('puppeteer');
+const playwright = require('playwright');
 
 module.exports = async function (context, req) {
-  /*
   const browser = await playwright['chromium'].launch({ headless: true, slowMo: 50 });
   const browserContext = await browser.newContext();
   const page = await browserContext.newPage();
   let results = {}
   let passingTests = 0;
-  let failedTests = 0;
-  */
-
-  let page;
-  let browser;
-  const width = 1200;
-  const height = 800;
+  let failedTests = 0;  
   
-  browser = await puppeteer.launch({
-    headless: true,
-    slowMo: 80,
-    args: [`--window-size=${width},${height}`]
-  });
-  page = await browser.newPage();
-  await page.setViewport({ width, height });
-  await page.goto("https://covid19.ca.gov");
-
-  
-  const links = await page.$$eval('a', anchors => anchors);
-  console.log(links)
-
-  browser.close();
-
-  let results = {"status":"success", "links": links.length};
-  
-  /*
   function linkCountCheck(count) {
     if(linkCount >= 20) {
       passingTests++;
@@ -43,7 +17,7 @@ module.exports = async function (context, req) {
     }  
   }
   //HOMEPAGE
-  await page.goto('http://covid19.ca.gov/');
+  await page.goto('https://covid19.ca.gov/');
   
   let linkCount = await page.evaluate(() => {
     return document.querySelectorAll('a').length
@@ -52,7 +26,7 @@ module.exports = async function (context, req) {
   results.homepage = "homepage number of links: "+linkCount;
 
   //ROADMAP
-  await page.goto('http://covid19.ca.gov/roadmap/');
+  await page.goto('https://covid19.ca.gov/roadmap/');
   
   linkCount = await page.evaluate(() => {
     return document.querySelectorAll('a').length
@@ -72,8 +46,6 @@ module.exports = async function (context, req) {
   }).then(res => {
     console.log(res);
   });
-  */
-
   await browser.close();
 
   
