@@ -19,7 +19,7 @@
   "homepage": "https://github.com/cagov/End-to-End-Testing-Svc#readme",
   "devDependencies": {},
   "dependencies": {
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "playwright": "^1.0.2"
   }
 }
